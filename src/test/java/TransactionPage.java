@@ -73,22 +73,16 @@ public class TransactionPage {
     @FindBy(xpath=".//table")
     private WebElement table;
 
-    @FindBy(xpath=".//tbody/tr")
+    @FindBy(xpath=".//table/tbody/tr")
     private List<WebElement> rows;
 
     @Step("Подсчет транзакций")
     public void rowCount(int expectedRowCount, int wait, boolean screenshot, int repeatTime, int repeatCount){
         new WebDriverWait(driver, Duration.ofSeconds(wait))
                 .until(ExpectedConditions.visibilityOf(this.table));
-        List<WebElement> rows = table.findElements(By.xpath(".//tbody/tr"));
         checkRowsCount(expectedRowCount, rows.size(), repeatTime, repeatCount);
         if (screenshot) screenshot();
     }
-
-
-//    public Array getTransactions(){
-//
-//    }
 
 
     @Step("Создание файла")

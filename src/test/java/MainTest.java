@@ -7,6 +7,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.LocalDate;
 
 public class MainTest {
 
@@ -33,20 +34,18 @@ public class MainTest {
         profilePage = new ProfilePage(driver);
         transactionPage = new TransactionPage(driver);
         driver.get("https://www.globalsqa.com/angularJs-protractor/BankingProject/#/");
-        //driver.manage().timeouts().implicitlyWait(Duration.ofMillis(2000));
     }
 
 
     @Test
     public void e2eTest(){
-        int fibonacciValue = getFibonacciValue(18);
+        int fibonacciValue = getFibonacciValue(LocalDate.now().getDayOfMonth() + 1);
         loginPage.choseCustType(2);
         loginPage.choseName("Harry Potter", true, 2);
         profilePage.setDeposit(fibonacciValue, "Deposit Successful", 2, true, 2);
         profilePage.setWithdrawl(fibonacciValue, "Transaction successful", 2, true, 2);
         profilePage.checkBalance("0", 1000, 5, 2);
         profilePage.transactions(2);
-
         transactionPage.rowCount(2, 2, true, 5000, 5);
         transactionPage.csvFileCreate();
     }
