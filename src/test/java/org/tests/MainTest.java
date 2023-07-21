@@ -1,30 +1,27 @@
+package org.tests;
+
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.pages.LoginPage;
+import org.pages.ProfilePage;
+import org.pages.TransactionPage;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDate;
 
-public class MainTest {
+import static org.methods.AdditionalMethods.getFibonacciValue;
 
+public class MainTest {
     public static LoginPage loginPage;
     public static ProfilePage profilePage;
     public static TransactionPage transactionPage;
     public static WebDriver driver;
-
-    public static int getFibonacciValue(int n) {
-        if (n <= 1) {
-            return 0;
-        } else if (n == 2) {
-            return 1;
-        } else  {
-            return getFibonacciValue(n - 1) + getFibonacciValue(n - 2);
-        }
-    }
+    private final int fibonacciValue = getFibonacciValue(LocalDate.now().getDayOfMonth() + 1);
 
     @BeforeClass
     public static void login() throws MalformedURLException {
@@ -36,10 +33,8 @@ public class MainTest {
         driver.get("https://www.globalsqa.com/angularJs-protractor/BankingProject/#/");
     }
 
-
     @Test
     public void e2eTest(){
-        int fibonacciValue = getFibonacciValue(LocalDate.now().getDayOfMonth() + 1);
         loginPage.choseCustType(2);
         loginPage.choseName("Harry Potter", true, 2);
         profilePage.setDeposit(fibonacciValue, "Deposit Successful", 2, true, 2);
@@ -54,5 +49,4 @@ public class MainTest {
     public void exit(){
         driver.quit();
     }
-
 }

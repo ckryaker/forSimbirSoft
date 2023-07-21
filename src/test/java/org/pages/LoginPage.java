@@ -1,7 +1,6 @@
-import io.qameta.allure.Attachment;
+package org.pages;
+
 import io.qameta.allure.Step;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -12,12 +11,15 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
+import static org.methods.AdditionalMethods.screenshot;
+
 public class LoginPage {
     public WebDriver driver;
     public LoginPage(WebDriver driver){
         PageFactory.initElements(driver, this);
         this.driver = driver;
     }
+
     @FindBy(xpath=".//button[text()='Customer Login']")
     private WebElement custType;
 
@@ -27,12 +29,6 @@ public class LoginPage {
     @FindBy(xpath=".//button[text()='Login']")
     private WebElement loginButton;
 
-
-    @Attachment(value = "Page screenshot", type = "image/png")
-    public byte[] screenshot() {
-        return ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
-    }
-
     @Step("Выбор типа кастомера")
     public void choseCustType(int wait){
         new WebDriverWait(driver, Duration.ofSeconds(wait))
@@ -41,13 +37,12 @@ public class LoginPage {
     }
 
     @Step("Выбор {value} кастомера")
-    public void choseName(String value, boolean sreenshot, int wait){
+    public void choseName(String value, boolean screenshot, int wait){
         new WebDriverWait(driver, Duration.ofSeconds(wait))
                 .until(ExpectedConditions.visibilityOf(this.selectName));
         Select dropDown = new Select(selectName);
         dropDown.selectByVisibleText(value);
         loginButton.click();
-        if (sreenshot) screenshot();
+        if (screenshot) screenshot();
     }
-
 }

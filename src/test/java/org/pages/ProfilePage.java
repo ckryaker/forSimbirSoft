@@ -1,17 +1,19 @@
+package org.pages;
+
 import io.qameta.allure.Allure;
-import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
 import io.qameta.allure.model.Status;
-import org.openqa.selenium.*;
+import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.opentest4j.AssertionFailedError;
 
 import java.time.Duration;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.methods.AdditionalMethods.*;
 
 public class ProfilePage {
     public WebDriver driver;
@@ -19,41 +21,6 @@ public class ProfilePage {
     public ProfilePage(WebDriver driver) {
         PageFactory.initElements(driver, this);
         this.driver = driver;
-    }
-
-    public void waitingElementDisplay(int timeOut, String xpath){
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeOut));
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(xpath))).isDisplayed();
-    }
-
-    private void checkValue(String expectedValue, String actualValue, int repeatTime, int repeatCount, WebElement element){
-        String sElement = element.toString().split("-> ")[1];
-        String loc0 = sElement.split(": ")[1];
-        String theLocator = loc0.substring(0,loc0.length()-1);
-
-        try {
-            assertEquals(actualValue, expectedValue);
-        }catch (AssertionFailedError error){
-            for(int i = 0; i < repeatCount; i++){
-                try{
-                    Thread.sleep(repeatTime);
-                    try{
-                        actualValue = driver.findElement(By.xpath(theLocator)).getText();
-                        assertEquals(actualValue, expectedValue);
-                        break;
-                    }
-                    catch (AssertionFailedError ignored) {
-                    }
-                }catch (Exception ignored){
-                }
-            }
-            try{
-                assertEquals(actualValue, expectedValue);
-            }catch (AssertionFailedError ignored){
-                throw new AssertionFailedError();
-            }
-        }
-
     }
 
     @FindBy(css="button[ng-class='btnClass2']")
@@ -76,11 +43,6 @@ public class ProfilePage {
 
     @FindBy(css="button[ng-class='btnClass1']")
     private WebElement transactions;
-
-    @Attachment(value = "Page screenshot", type = "image/png")
-    public byte[] screenshot() {
-        return ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
-    }
 
     @Step("Депозит на {amount}. Ожидается \"{expectedAnswer}\" ответ")
     public void setDeposit(int amount, String expectedAnswer, int timeoutForExpRes, boolean screenshot, int wait){
@@ -133,6 +95,4 @@ public class ProfilePage {
                 .until(ExpectedConditions.visibilityOf(this.transactions));
         transactions.click();
     }
-
-
 }

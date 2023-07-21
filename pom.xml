@@ -3,17 +3,24 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <groupId>org.example</groupId>
     <artifactId>forSimbirSoft</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <url>https://github.com/ckryaker/forSimbirSoft/tree/master</url>
+
+    <developers>
+        <developer>
+            <id>ckryaker</id>
+            <name>Egor Kirnos</name>
+            <email>kirnos.egor@yandex.ru</email>
+        </developer>
+    </developers>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven-surefire-plugin.version>3.0.0</maven-surefire-plugin.version>
-
         <aspectj.version>1.9.1</aspectj.version>
         <allure.version>2.13.6</allure.version>
     </properties>
@@ -23,6 +30,7 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.13.2</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>

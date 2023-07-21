@@ -1,23 +1,22 @@
-import io.qameta.allure.Attachment;
+package org.pages;
+
 import io.qameta.allure.Step;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.opentest4j.AssertionFailedError;
 
-import java.io.File;
 import java.io.FileWriter;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.methods.AdditionalMethods.*;
 
 public class TransactionPage {
 
@@ -26,48 +25,6 @@ public class TransactionPage {
     public TransactionPage(WebDriver driver) {
         PageFactory.initElements(driver, this);
         this.driver = driver;
-    }
-
-    private void checkRowsCount(int expectedValue, int actualValue, int repeatTime, int repeatCount){
-        try {
-            assertEquals(actualValue, expectedValue);
-        }catch (AssertionFailedError error){
-            for(int i = 0; i < repeatCount; i++){
-                try{
-                    Thread.sleep(repeatTime);
-                    try{
-                        driver.navigate().refresh();
-                        actualValue = driver.findElements(By.xpath(".//tbody/tr")).size();
-                        assertEquals(actualValue, expectedValue);
-                        break;
-                    }
-                    catch (AssertionFailedError ignored) {
-                    }
-                }catch (Exception ignored){
-                }
-            }
-            try{
-                assertEquals(actualValue, expectedValue);
-            }catch (AssertionFailedError ignored){
-                throw new AssertionFailedError();
-            }
-        }
-
-    }
-
-    private static byte[] fileToBytes(String fileName) throws Exception {
-        File file = new File(fileName);
-        return Files.readAllBytes(Paths.get(file.getAbsolutePath()));
-    }
-
-    @Attachment
-    public static byte[] attachFileType_CSV(String filePath) throws Exception {
-        return fileToBytes(filePath);
-    }
-
-    @Attachment(value = "Page screenshot", type = "image/png")
-    public byte[] screenshot() {
-        return ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
     }
 
     @FindBy(xpath=".//table")
@@ -84,11 +41,10 @@ public class TransactionPage {
         if (screenshot) screenshot();
     }
 
-
     @Step("Создание файла")
     public void csvFileCreate(){
         try {
-            FileWriter csvWriter = new FileWriter("new.csv");
+            FileWriter csvWriter = new FileWriter("src/test/resources/new.csv");
             csvWriter.append("Date and Time");
             csvWriter.append("\t\t");
             csvWriter.append("Amount");
@@ -114,7 +70,7 @@ public class TransactionPage {
             }
             csvWriter.flush();
             csvWriter.close();
-            attachFileType_CSV("new.csv");
+            attachFileType_CSV("src/test/resources/new.csv");
         }catch (Exception ignored){
         }
     }
