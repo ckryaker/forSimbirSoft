@@ -16,7 +16,7 @@ import java.time.LocalDate;
 
 import static org.methods.AdditionalMethods.getFibonacciValue;
 
-public class MainTest {
+public class MainTest{
     public static LoginPage loginPage;
     public static ProfilePage profilePage;
     public static TransactionPage transactionPage;
@@ -35,13 +35,13 @@ public class MainTest {
 
     @Test
     public void e2eTest(){
-        loginPage.choseCustType(2);
-        loginPage.choseName("Harry Potter", true, 2);
-        profilePage.setDeposit(fibonacciValue, "Deposit Successful", 2, true, 2);
-        profilePage.setWithdrawl(fibonacciValue, "Transaction successful", 2, true, 2);
-        profilePage.checkBalance("0", 1000, 5, 2);
-        profilePage.transactions(2);
-        transactionPage.rowCount(2, 2, true, 5000, 5);
+        loginPage.choseCustType();
+        loginPage.choseName("Harry Potter");
+        profilePage.setDeposit(fibonacciValue, "Deposit Successful");
+        profilePage.setWithdrawl(fibonacciValue, "Transaction successful");
+        profilePage.checkBalance("0", 3000);
+        profilePage.transactions();
+        transactionPage.rowCount(3,  1000, 5);
         transactionPage.csvFileCreate();
     }
 

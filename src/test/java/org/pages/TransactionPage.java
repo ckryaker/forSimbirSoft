@@ -34,11 +34,10 @@ public class TransactionPage {
     private List<WebElement> rows;
 
     @Step("Подсчет транзакций")
-    public void rowCount(int expectedRowCount, int wait, boolean screenshot, int repeatTime, int repeatCount){
-        new WebDriverWait(driver, Duration.ofSeconds(wait))
+    public void rowCount(int expectedRowCount, int timeOut, int repeatCount){
+        new WebDriverWait(driver, Duration.ofSeconds(5))
                 .until(ExpectedConditions.visibilityOf(this.table));
-        checkRowsCount(expectedRowCount, rows.size(), repeatTime, repeatCount);
-        if (screenshot) screenshot();
+        checkRowsCount(expectedRowCount, rows.size(), timeOut, repeatCount);
     }
 
     @Step("Создание файла")

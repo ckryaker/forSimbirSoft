@@ -11,8 +11,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
-import static org.methods.AdditionalMethods.screenshot;
-
 public class LoginPage {
     public WebDriver driver;
     public LoginPage(WebDriver driver){
@@ -30,19 +28,18 @@ public class LoginPage {
     private WebElement loginButton;
 
     @Step("Выбор типа кастомера")
-    public void choseCustType(int wait){
-        new WebDriverWait(driver, Duration.ofSeconds(wait))
+    public void choseCustType(){
+        new WebDriverWait(driver, Duration.ofSeconds(5))
                 .until(ExpectedConditions.visibilityOf(this.custType));
         custType.click();
     }
 
     @Step("Выбор {value} кастомера")
-    public void choseName(String value, boolean screenshot, int wait){
-        new WebDriverWait(driver, Duration.ofSeconds(wait))
+    public void choseName(String value){
+        new WebDriverWait(driver, Duration.ofSeconds(5))
                 .until(ExpectedConditions.visibilityOf(this.selectName));
         Select dropDown = new Select(selectName);
         dropDown.selectByVisibleText(value);
         loginButton.click();
-        if (screenshot) screenshot();
     }
 }

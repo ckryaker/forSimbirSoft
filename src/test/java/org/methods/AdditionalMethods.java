@@ -2,8 +2,6 @@ package org.methods;
 
 import io.qameta.allure.Attachment;
 import org.openqa.selenium.By;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -18,11 +16,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.tests.MainTest.driver;
 
 public class AdditionalMethods {
-    @Attachment(value = "Page screenshot", type = "image/png")
-    public static byte[] screenshot() {
-        return ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
-    }
-
     public static int getFibonacciValue(int n) {
         if (n <= 1) {
             return 0;
@@ -57,7 +50,6 @@ public class AdditionalMethods {
                 throw new AssertionFailedError();
             }
         }
-
     }
 
     private static byte[] fileToBytes(String fileName) throws Exception {
@@ -75,31 +67,12 @@ public class AdditionalMethods {
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(xpath))).isDisplayed();
     }
 
-    public static void checkValue(String expectedValue, String actualValue, int repeatTime, int repeatCount, WebElement element){
+    public static void checkValue(String expectedValue, int timeOut, WebElement element){
         String sElement = element.toString().split("-> ")[1];
         String loc0 = sElement.split(": ")[1];
         String theLocator = loc0.substring(0,loc0.length()-1);
-        try {
-            assertEquals(actualValue, expectedValue);
-        }catch (AssertionFailedError error){
-            for(int i = 0; i < repeatCount; i++){
-                try{
-                    Thread.sleep(repeatTime);
-                    try{
-                        actualValue = driver.findElement(By.xpath(theLocator)).getText();
-                        assertEquals(actualValue, expectedValue);
-                        break;
-                    }
-                    catch (AssertionFailedError ignored) {
-                    }
-                }catch (Exception ignored){
-                }
-            }
-            try{
-                assertEquals(actualValue, expectedValue);
-            }catch (AssertionFailedError ignored){
-                throw new AssertionFailedError();
-            }
-        }
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeOut));
+        wait.until(ExpectedConditions.textToBe(By.xpath(theLocator), expectedValue));
     }
 }

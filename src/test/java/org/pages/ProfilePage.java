@@ -45,17 +45,16 @@ public class ProfilePage {
     private WebElement transactions;
 
     @Step("Депозит на {amount}. Ожидается \"{expectedAnswer}\" ответ")
-    public void setDeposit(int amount, String expectedAnswer, int timeoutForExpRes, boolean screenshot, int wait){
-        new WebDriverWait(driver, Duration.ofSeconds(wait))
+    public void setDeposit(int amount, String expectedAnswer){
+        new WebDriverWait(driver, Duration.ofSeconds(5))
                 .until(ExpectedConditions.visibilityOf(this.deposit));
         deposit.click();
-        new WebDriverWait(driver, Duration.ofSeconds(wait))
+        new WebDriverWait(driver, Duration.ofSeconds(5))
                 .until(ExpectedConditions.visibilityOf(this.depositAmount));
         depositAmount.sendKeys(String.valueOf(amount));
         submitAmount.click();
-        if (screenshot) screenshot();
         try {
-            waitingElementDisplay(timeoutForExpRes, ".//*[contains(text(), '" + expectedAnswer + "')]");
+            waitingElementDisplay(5, ".//*[contains(text(), '" + expectedAnswer + "')]");
         }catch (TimeoutException ignored){
             Allure.getLifecycle().updateStep(stepResult -> stepResult.setStatus(Status.FAILED));
             Allure.getLifecycle().updateTestCase(stepResult -> stepResult.setStatus(Status.FAILED));
@@ -64,17 +63,16 @@ public class ProfilePage {
     }
 
     @Step ("Списание средств на {amount}. Ожидается \"{expectedAnswer}\" ответ")
-    public void setWithdrawl(int amount, String expectedAnswer, int timeoutForExpRes, boolean screenshot, int wait){
-        new WebDriverWait(driver, Duration.ofSeconds(wait))
+    public void setWithdrawl(int amount, String expectedAnswer){
+        new WebDriverWait(driver, Duration.ofSeconds(5))
                 .until(ExpectedConditions.visibilityOf(this.withdrawl));
         withdrawl.click();
-        new WebDriverWait(driver, Duration.ofSeconds(wait))
+        new WebDriverWait(driver, Duration.ofSeconds(5))
                 .until(ExpectedConditions.visibilityOf(this.withdrawlAmount));
         withdrawlAmount.sendKeys(String.valueOf(amount));
         submitAmount.click();
-        if (screenshot) screenshot();
         try {
-            waitingElementDisplay(timeoutForExpRes, ".//*[contains(text(), '" + expectedAnswer + "')]");
+            waitingElementDisplay(5, ".//*[contains(text(), '" + expectedAnswer + "')]");
         }catch (TimeoutException ignored){
             Allure.getLifecycle().updateStep(stepResult -> stepResult.setStatus(Status.FAILED));
             Allure.getLifecycle().updateTestCase(stepResult -> stepResult.setStatus(Status.FAILED));
@@ -83,15 +81,15 @@ public class ProfilePage {
     }
 
     @Step("Проверка баланса")
-    public void checkBalance(String expectedValue, int repeatTime, int repeatCount ,int wait){
-        new WebDriverWait(driver, Duration.ofSeconds(wait))
+    public void checkBalance(String expectedValue, int timeOut){
+        new WebDriverWait(driver, Duration.ofSeconds(5))
                 .until(ExpectedConditions.visibilityOf(this.balance));
-        checkValue(expectedValue, balance.getText(), repeatTime, repeatCount, balance);
+        checkValue(expectedValue, timeOut, balance);
         }
 
     @Step("Переход к транзакциям")
-    public void transactions(int wait){
-        new WebDriverWait(driver, Duration.ofSeconds(wait))
+    public void transactions(){
+        new WebDriverWait(driver, Duration.ofSeconds(5))
                 .until(ExpectedConditions.visibilityOf(this.transactions));
         transactions.click();
     }
